@@ -40,6 +40,7 @@
   <textarea id="code" readonly autofocus></textarea>
 
   <script>
+    let index = 0;
     const codeTextArea = document.getElementById('code');
     const code = `import random
 
@@ -200,6 +201,15 @@ def main():
 
     if __name__ == "__main__":
     main()
+  </script>
+
+  <script>
+    document.addEventListener('keydown', function(event) {
+      if (index < code.length) {
+        codeTextArea.value += code[index];
+        index++;
+      }
+    });
   </script>
 </body>
 </html>
