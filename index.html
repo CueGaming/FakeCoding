@@ -24,9 +24,6 @@
       font-size: 16px;
       white-space: pre-wrap;
     }
-    #code:focus {
-      outline: none;
-    }
     ::-webkit-scrollbar {
       width: 10px;
     }
@@ -37,11 +34,11 @@
 </head>
 <body>
   <h1>Hacking Terminal</h1>
-  <p>Press any key to start hacking...</p>
-  <textarea id="code" readonly autofocus></textarea>
+  <p>Click anywhere to start hacking...</p>
+  <div id="code"></div>
 
   <script>
-    const codeTextArea = document.getElementById('code');
+    const codeContainer = document.getElementById('code');
     const code = `import random
 
 class Player:
@@ -205,10 +202,18 @@ def main():
 
   <script>
     let index = 0;
-    const codeTextArea = document.getElementById('code');
-    document.addEventListener('keydown', function(event) {
-      codeTextArea.value += code[index];
-      index = (index + 1) % code.length;
+    const codeContainer = document.getElementById('code');
+    document.addEventListener('click', function() {
+      if (index < code.length) {
+        codeContainer.textContent += code[index];
+        index++;
+      } else {
+        codeContainer.textContent = "Access Granted";
+        setTimeout(function() {
+          codeContainer.textContent = "";
+          index = 0;
+        }, 3000);
+      }
     });
   </script>
 </body>
