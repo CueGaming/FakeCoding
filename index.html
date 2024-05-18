@@ -3,29 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prank Code Editor</title>
+  <title>Hacking Terminal</title>
   <style>
     body {
+      background-color: #000;
+      color: #0f0;
       font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      margin-top: 100px;
     }
     #code {
       width: 80%;
       height: 400px;
-      border: 1px solid #ccc;
+      border: 1px solid #0f0;
       margin: 20px auto;
       padding: 10px;
       overflow: auto;
+      background-color: #000;
+      color: #0f0;
+      font-size: 16px;
+    }
+    #code:focus {
+      outline: none;
+    }
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #0f0;
     }
   </style>
 </head>
 <body>
-  <h1>Prank Code Editor</h1>
-  <p>Start typing to see the code change!</p>
-  <textarea id="code" readonly></textarea>
+  <h1>Hacking Terminal</h1>
+  <p>Press any key to start hacking...</p>
+  <textarea id="code" readonly autofocus></textarea>
 
   <script>
     const codeTextArea = document.getElementById('code');
-    let code = `import random
+    const code = `import random
 
 class Player:
     def __init__(self, name):
