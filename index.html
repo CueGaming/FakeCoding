@@ -22,6 +22,7 @@
       background-color: #000;
       color: #0f0;
       font-size: 16px;
+      white-space: pre-wrap;
     }
     #code:focus {
       outline: none;
@@ -40,7 +41,6 @@
   <textarea id="code" readonly autofocus></textarea>
 
   <script>
-    let index = 0;
     const codeTextArea = document.getElementById('code');
     const code = `import random
 
@@ -204,11 +204,11 @@ def main():
   </script>
 
   <script>
+    let index = 0;
+    const codeTextArea = document.getElementById('code');
     document.addEventListener('keydown', function(event) {
-      if (index < code.length) {
-        codeTextArea.value += code[index];
-        index++;
-      }
+      codeTextArea.value += code[index];
+      index = (index + 1) % code.length;
     });
   </script>
 </body>
