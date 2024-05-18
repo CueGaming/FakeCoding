@@ -1,20 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake Hacking Website</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prank Code Editor</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+    }
+    #code {
+      width: 80%;
+      height: 400px;
+      border: 1px solid #ccc;
+      margin: 20px auto;
+      padding: 10px;
+      overflow: auto;
+    }
+  </style>
 </head>
 <body>
-    <div id="terminal">
-        <div id="output">
-            <p>Welcome to the Matrix...</p>
-        </div>
-        <input type="text" id="search" placeholder="Search...">
-        <input type="text" id="input" style="display: none;">
-    </div>
+  <h1>Prank Code Editor</h1>
+  <p>Start typing to see the code change!</p>
+  <textarea id="code" readonly></textarea>
 
-    <script src="script.js"></script>
+  <script>
+    const codeTextArea = document.getElementById('code');
+    let code = `import random
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.health = 100
+        self.max_health = 100
+        self.attack_damage = 10
+        self.inventory = {"Health Potion": 3, "Key": 1}
+        self.gold = 0
+
+    def take_damage(self, damage):
+        self.health -= damage
+        if self.health < 0:
+            self.health = 0
+
+    def heal(self, amount):
+        self.health += amount
+        if self.health > self.max_health:
+            self.health = self.max_health
+
+    def add_to_inventory(self, item, quantity=1):
+        if item in self.inventory:
+            self.inventory[item] += quantity
+        else:
+            self.inventory[item] = quantity
+
+    def remove_from_inventory(self, item, quantity=1):
+        if item in self.inventory:
+            self.inventory[item] -= quantity
+            if self.inventory[item] <= 0:
+                del self.inventory[item]
+
+    def display_status(self):
+        print("Player:", self.name)
+        print("Health:", self.health, "/", self.max_health)
+        print("Attack Damage:", self.attack_damage)
+        print("Inventory:")
+        for item, quantity in self.inventory.items():
+            print(f"{item}: {quantity}")
+        print("Gold:", self.gold)
+
+class Enemy:
+    def __init__(self, name, health, damage):
+        self.name = name
+        self.health = health
+        self.damage = damage
+
+    def take_damage(self, damage):
+        self.health -= damage
+        if self.health < 0:
+            self.health = 0
+
+    def is_alive(self):
+        return self.health > 0
+
+    def attack(self, player):
+        player.take_damage(self.damage)
+        print(self.name, "attacks", player.name, "for", self.damage, "damage!")
+
+def generate_enemy():
+    enemy_names = ["Goblin", "Orc", "Skeleton", "Zombie"]
+    name = random.choice(enemy_names)
+    health = random.randint(50, 100)
+    damage = random.randint(10, 20)
+    return Enemy(name, health, damage)
+
+def main():
+    print("Welcome to the Adventure Game!")
+    player_name = input("Enter your name: ")
+    player = Player(player_name)
+
+    while True:
+        print("\n" + "=" * 20)
+        print("1. Explore")
+        print("2. Check inventory")
+        print("3. Buy from Merchant")
+        print("4. Quit")
+        choice = input("Enter your choice: ")
+
+        if choice == '1':
+            print("\nYou are exploring...")
+            if random.random() < 0.5:
+                enemy = generate_enemy()
+                print("You encounter a", enemy.name + "!")
+                while enemy.is_alive() and player.health > 0:
+                    print("\n1. Attack")
+                    print("2. Use Health Potion")
+                    print("3. Run")
+                    action = input("Choose your action: ")
+                    if action == '1':
+                        enemy.take_damage(player.attack_damage)
+                        print("You attacked the", enemy.name + " for", player.attack_damage, "damage!")
+                        if enemy.is_alive():
+                            enemy.attack(player)
+                    elif action == '2':
+                        if "Health Potion" in player.inventory and player.inventory["Health Potion"] > 0:
+                            player.heal(20)
+                            player.remove_from_inventory("Health Potion")
+                            print("You used a Health Potion and healed for 20 HP!")
+                        else:
+                            print("You don't have any Health Potions!")
+                    elif action == '3':
+                        print("You run away!")
+                        break
+                    else:
+                        print("Invalid choice!")
+                if player.health <= 0:
+                    print("Game Over! You have been defeated.")
+                    break
+                elif not enemy.is_alive():
+                    print("You defeated the", enemy.name + "!")
+                    player.heal(20)
+                    print("You found a Health Potion and healed for 20 HP!")
+                    loot_chance = random.random()
+                    if loot_chance < 0.3:
+                        player.add_to_inventory("Health Potion")
+                        print("You found a Health Potion and added it to your inventory!")
+                    gold = random.randint(5, 20)
+                    player.gold += gold
+                    print(f"You found {gold} gold!")
+            else:
+                print("You explore but find nothing.")
+
+        elif choice == '2':
+            player.display_status()
+
+        elif choice == '3':
+            print("Welcome to the Merchant's Shop!")
+            print("1. Buy Health Potion (10 gold)")
+            print("2. Buy Key (20 gold)")
+            print("3. Leave")
+            merchant_choice = input("Enter your choice: ")
+            if merchant_choice == '1':
+                if player.gold >= 10:
+                    player.add_to_inventory("Health Potion")
+                    player.gold -= 10
+                    print("You bought a Health Potion!")
+                else:
+                    print("Not enough gold!")
+            elif merchant_choice == '2':
+                if player.gold >= 20:
+                    player.add_to_inventory("Key")
+                    player.gold -= 20
+                    print("You bought a Key!")
+                else:
+                    print("Not enough gold!")
+            elif merchant_choice == '3':
+                print("You leave the Merchant's Shop.")
+
+        elif choice == '4':
+            print("Thanks for playing!")
+            break
+
+        else:
+            print("Invalid choice!")
+
+    if __name__ == "__main__":
+    main()
+  </script>
 </body>
 </html>
